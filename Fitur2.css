@@ -1,0 +1,742 @@
+/* XRPL2 — Fitur 2: info hari ini, rekap absensi, hitung mundur tugas, kas kelas, ulang tahun */
+
+/* ---- Info hari ini (Beranda) ---- */
+.info-card {
+  margin-top: 14px;
+  padding: 14px 18px;
+  max-width: 420px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  display: grid;
+  gap: 12px;
+}
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.info-row[hidden] {
+  display: none;
+}
+.info-ico {
+  font-size: 18px;
+  line-height: 1.2;
+}
+.info-row small {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+}
+.info-row b {
+  display: block;
+  margin-top: 3px;
+  font: 600 13px "Space Grotesk";
+  overflow-wrap: anywhere;
+}
+.sync-line {
+  font-size: 10px;
+  color: var(--muted);
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.sync-line[data-state="online"] {
+  color: #4ade80;
+}
+.sync-line[data-state="offline"] {
+  color: #ffd166;
+}
+#installBtn[hidden],
+#kasMore[hidden] {
+  display: none;
+}
+
+/* ---- Piket: hari ini ---- */
+tr.piket-today td {
+  background: rgba(56, 167, 255, 0.12);
+  font-weight: 700;
+}
+
+/* ---- Hitung mundur tugas ---- */
+.task-deadline[data-urgency="ok"] {
+  color: #4ade80;
+}
+.task-deadline[data-urgency="soon"] {
+  color: #ffd166;
+}
+.task-deadline[data-urgency="hot"] {
+  color: #ff9f5a;
+  font-weight: 700;
+}
+.task-deadline[data-urgency="late"] {
+  color: #ff5b6b;
+  font-weight: 700;
+}
+
+/* ---- Rekap absensi ---- */
+.rekap-panel {
+  margin-top: 18px;
+}
+.rekap-tools {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.rekap-tools input {
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 12px;
+}
+.rekap-izin {
+  color: #ffd166;
+}
+.rekap-sakit {
+  color: #4ade80;
+}
+.rekap-alpha {
+  color: #ff5b6b;
+}
+
+/* ---- Kas kelas ---- */
+.kas-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.kas-summary > div {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.kas-summary small {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+}
+.kas-summary strong {
+  display: block;
+  margin-top: 6px;
+  font: 700 20px "Space Grotesk";
+  overflow-wrap: anywhere;
+}
+.kas-summary strong[data-negative="true"] {
+  color: #ff5b6b;
+}
+.kas-in strong {
+  color: #4ade80;
+}
+.kas-out strong {
+  color: #ff5b6b;
+}
+.kas-list {
+  display: grid;
+  gap: 10px;
+}
+.kas-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+}
+.kas-item > div {
+  flex: 1;
+  min-width: 0;
+}
+.kas-item b {
+  font: 600 13px "Space Grotesk";
+  overflow-wrap: anywhere;
+}
+.kas-item p {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+.kas-amount {
+  font: 700 13px "Space Grotesk";
+  white-space: nowrap;
+}
+.kas-masuk .kas-amount {
+  color: #4ade80;
+}
+.kas-keluar .kas-amount {
+  color: #ff5b6b;
+}
+#kasMore {
+  margin-top: 14px;
+}
+@media (max-width: 760px) {
+  .kas-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Ulang tahun ---- */
+.member-card.birthday {
+  position: relative;
+  box-shadow: 0 0 0 1px #ffd16688;
+}
+.bday-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
+}
+
+/* ---- Tab admin: sinkron ---- */
+.sync-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+/* ---- Tombol bintang & mode hemat (anti lag) ---- */
+body.stars-off .starfield,
+body.stars-off .shooting-stars {
+  display: none !important; /* animasi berhenti total, tidak membebani browser */
+}
+.star-toggle {
+  position: relative;
+}
+.star-toggle.off {
+  opacity: 0.55;
+}
+.star-toggle.off::after {
+  content: "";
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  top: 50%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transform: rotate(-45deg);
+}
+
+/* ---- Orbit planet (cincin ala Saturnus): putaran lebih terlihat & mulus ---- */
+/* Masalah lama: cincin lingkaran berputar tapi tidak ada penanda sehingga tampak diam,
+   dan cincin ke-2 melompat tiap putaran karena keyframe-nya mulai dari 60° lalu kembali. */
+@keyframes orbitSpinB {
+  from {
+    transform: rotate(60deg);
+  }
+  to {
+    transform: rotate(420deg); /* tepat 360° dari titik awal → loop mulus */
+  }
+}
+.orbit {
+  will-change: transform;
+}
+.orbit-one {
+  animation: rotate 9s linear infinite;
+}
+.orbit-two {
+  animation: orbitSpinB 14s linear infinite reverse;
+}
+/* satelit kecil di jalur cincin, supaya gerakan terlihat jelas */
+.orbit::before,
+.orbit::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+.orbit::before {
+  top: -6px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  background: #bfe8ff;
+  box-shadow:
+    0 0 10px 3px #38a7ffcc,
+    0 0 26px 8px #1688ef66;
+}
+.orbit::after {
+  bottom: -3px;
+  left: calc(50% - 3px);
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  opacity: 0.8;
+  box-shadow: 0 0 8px 2px #56baffaa;
+}
+.orbit-two::before {
+  background: #fff;
+  box-shadow:
+    0 0 10px 3px #77d4ffcc,
+    0 0 26px 8px #38a7ff55;
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-one,
+  .orbit-two {
+    animation: none;
+  }
+}
+
+/* ---- Login siswa & streak login ---- */
+#studentBtn {
+  white-space: nowrap;
+}
+.modal select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  font-size: 12px;
+}
+.stu-note {
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+.stu-name {
+  overflow-wrap: anywhere;
+}
+.streak-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 180, 84, 0.08);
+}
+.streak-hero.cold {
+  background: transparent;
+}
+.streak-hero.cold .streak-flame {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+.streak-hero.cold .streak-num {
+  color: var(--muted);
+}
+.streak-flame {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  line-height: 1;
+  border-radius: 15px;
+  background: rgba(255, 180, 84, 0.12);
+  flex: none;
+}
+.streak-num {
+  font: 700 40px "Space Grotesk";
+  line-height: 1;
+  color: #ffb454;
+}
+.streak-num small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.streak-label {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.lb-title {
+  font: 600 13px "Space Grotesk";
+  margin: 20px 0 0;
+}
+.lb-list {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 12px;
+}
+.lb-row.me {
+  border-color: var(--blue);
+  background: rgba(56, 167, 255, 0.1);
+}
+.lb-rank {
+  width: 20px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.lb-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lb-val {
+  font-weight: 700;
+  color: #ffb454;
+  white-space: nowrap;
+}
+.stu-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* ---- Navbar HP: tombol dipadatkan supaya menu tidak terpotong ---- */
+@media (max-width: 520px) {
+  .top-actions {
+    gap: 6px;
+  }
+  .top-actions .btn {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+  .top-actions .icon-btn {
+    width: 36px;
+    height: 36px;
+    flex: none;
+  }
+  #loginOpen {
+    max-width: 62px;
+    line-height: 1.15;
+  }
+  #studentBtn .stu-label {
+    display: none; /* hanya ikon 👤 di layar kecil */
+  }
+  .brand small {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  .brand > span:not(.brand-mark) {
+    display: none; /* tinggal logo "X" */
+  }
+}
+
+/* ---- Cincin planet yang berputar tidak boleh memunculkan geser samping di HP ---- */
+.hero {
+  overflow-x: clip;
+}
+
+/* ---- Tablet kecil (761–900px): menu atas dipadatkan karena tombol & menu Kas bertambah ---- */
+@media (min-width: 761px) and (max-width: 900px) {
+  .topbar {
+    padding: 0 16px;
+  }
+  .topbar nav {
+    gap: 9px;
+  }
+  #studentBtn .stu-label {
+    display: none;
+  }
+  .brand small {
+    display: none;
+  }
+}
+
+/* ===================== Bingkai tier streak ===================== */
+/* 10 Besi · 30 Emas · 100 Emerald · 200 Diamond · 356 Obsidian (ungu-hitam) */
+.avatar-ring {
+  --tier-color: #aab4c2;
+  --ring: #888;
+  position: relative;
+  display: block;
+  width: 56px;
+  height: 56px;
+  padding: 4px;
+  margin: -4px auto 6px; /* tinggi total sama dengan kartu tanpa bingkai */
+  border-radius: 19px;
+  box-sizing: border-box;
+  isolation: isolate;
+  flex: none;
+}
+.avatar-ring .ring-child {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+}
+.ring-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  overflow: hidden;
+  background: var(--ring);
+}
+/* kilau yang menyapu (emas & emerald) */
+.tier-gold .ring-bg::after,
+.tier-emerald .ring-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.7) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  animation: ringShine 3.4s ease-in-out infinite;
+}
+/* gradien berputar (diamond & obsidian) */
+.tier-diamond .ring-bg::before,
+.tier-void .ring-bg::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: var(--spin);
+  animation: ringSpin 5s linear infinite;
+}
+.tier-void .ring-bg::before {
+  animation-duration: 7s;
+}
+
+.tier-iron {
+  --tier-color: #aab4c2;
+  --ring: linear-gradient(145deg, #e4e9f0, #8d97a6 35%, #555d6b 62%, #b9c1cd);
+  box-shadow:
+    0 0 0 1px #3a414d,
+    0 3px 10px #0008;
+}
+.tier-gold {
+  --tier-color: #ffd166;
+  --ring: linear-gradient(145deg, #fff3b0, #ffd23f 28%, #b8860b 58%, #ffe58a);
+  box-shadow: 0 0 12px 1px #ffd16680;
+}
+.tier-emerald {
+  --tier-color: #34d399;
+  --ring: linear-gradient(145deg, #8bffd0, #10b981 30%, #065f46 62%, #34d399);
+  box-shadow: 0 0 14px 2px #10b98180;
+}
+.tier-diamond {
+  --tier-color: #9ee9ff;
+  --ring: #bdefff;
+  --spin: conic-gradient(
+    #ffffff,
+    #7fdcff,
+    #e8fbff,
+    #8fb4ff,
+    #ffffff,
+    #b3f0ff,
+    #ffffff
+  );
+  box-shadow:
+    0 0 16px 3px #7fdcff99,
+    0 0 2px 1px #ffffffaa;
+}
+.tier-void {
+  --tier-color: #a855f7;
+  --ring: #12001f;
+  --spin: conic-gradient(
+    #07000f,
+    #5b21b6,
+    #07000f,
+    #c084fc,
+    #07000f,
+    #3b0764,
+    #07000f
+  );
+  box-shadow:
+    0 0 16px 3px #7c3aed99,
+    0 0 30px 6px #4c1d9566;
+  animation: voidPulse 3s ease-in-out infinite;
+}
+.tier-void .ring-child {
+  box-shadow: 0 0 0 2px #07000f;
+}
+
+/* percikan kecil di sekitar bingkai (diamond & obsidian) */
+.ring-spark {
+  position: absolute;
+  z-index: 3;
+  font-size: 11px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 6px currentColor;
+  pointer-events: none;
+  opacity: 0;
+  animation: ringTwinkle 2.4s ease-in-out infinite;
+}
+.tier-void .ring-spark {
+  color: #e9d5ff;
+}
+.ring-spark.s-a {
+  top: -6px;
+  right: -4px;
+  font-size: 13px;
+}
+.ring-spark.s-b {
+  bottom: -5px;
+  left: -4px;
+  animation-delay: 0.8s;
+}
+.ring-spark.s-c {
+  top: 38%;
+  right: -8px;
+  font-size: 8px;
+  animation-delay: 1.5s;
+}
+@keyframes ringSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ringShine {
+  0%,
+  55% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+@keyframes ringTwinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+}
+@keyframes voidPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 14px 2px #7c3aed88,
+      0 0 26px 4px #4c1d9555;
+  }
+  50% {
+    box-shadow:
+      0 0 20px 5px #a855f7aa,
+      0 0 38px 10px #6d28d977;
+  }
+}
+/* mode hemat (tombol bintang mati) & "kurangi gerakan": bingkai tetap tampil, tanpa animasi */
+body.stars-off .ring-bg::before,
+body.stars-off .ring-bg::after,
+body.stars-off .avatar-ring {
+  animation: none !important;
+}
+body.stars-off .ring-spark {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ring-bg::before,
+  .ring-bg::after,
+  .avatar-ring {
+    animation: none !important;
+  }
+  .ring-spark {
+    display: none;
+  }
+}
+
+/* ---- Pratinjau bingkai (profil siswa & admin) ---- */
+.tier-legend {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.tier-item {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  text-align: center;
+  padding: 10px 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.tier-item b {
+  font: 600 11px "Space Grotesk";
+  margin-top: 6px;
+}
+.tier-item small {
+  font-size: 9px;
+  color: var(--muted);
+}
+.tier-item.locked {
+  opacity: 0.4;
+  filter: grayscale(0.6);
+}
+.avatar-ring.mini {
+  width: 44px;
+  height: 44px;
+  padding: 3px;
+  border-radius: 15px;
+  margin: 4px auto 0;
+}
+.avatar.mini {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+.avatar-ring.mini .ring-spark.s-a {
+  top: -7px;
+  right: -5px;
+}
+.tier-line {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.tier-text-iron {
+  color: #c3cbd6;
+}
+.tier-text-gold {
+  color: #ffd166;
+}
+.tier-text-emerald {
+  color: #34d399;
+}
+.tier-text-diamond {
+  color: #9ee9ff;
+}
+.tier-text-void {
+  color: #c084fc;
+}
+/* baris papan streak diberi garis warna sesuai tier */
+.lb-iron {
+  border-left: 3px solid #aab4c2;
+}
+.lb-gold {
+  border-left: 3px solid #ffd166;
+}
+.lb-emerald {
+  border-left: 3px solid #34d399;
+}
+.lb-diamond {
+  border-left: 3px solid #9ee9ff;
+}
+.lb-void {
+  border-left: 3px solid #a855f7;
+}
+@media (max-width: 420px) {
+  .tier-legend {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

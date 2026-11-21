@@ -1,0 +1,25 @@
+{
+  "name": "XRPL2 — Portal Kelas",
+  "short_name": "XRPL2",
+  "description": "Portal kelas XRPL2: jadwal, piket, tugas, absensi, dan kas kelas.",
+  "lang": "id",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#050b16",
+  "theme_color": "#071426",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
